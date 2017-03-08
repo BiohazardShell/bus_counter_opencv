@@ -69,7 +69,12 @@ def set_zone( people_list) :
 				# suppr array case
 				index = np.argwhere( people_list == i )
 				people_list = np.delete( people_list, index )
-			
+		elif ( people_list[ i ]['zone'] == 'N' ) :
+			if ( people_list[ i ]['x'] > ( img_w /2 ) ) :
+				people_list[ i ]['zone'] = 'R'
+			elif ( people_list[ i ]['x'] < ( img_w / 2 ) ) :
+				people_list[ i ]['zone'] = 'B'	
+		
 		
 	
 
