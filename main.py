@@ -19,7 +19,9 @@ cam = picamera.PiCamera()
 cam.resolution = (img_w, img_h)
 cam.hflip = False
 
-
+# calassifier
+frontfaces = cv2.CascadeClassifier('haarcascade_frontalface_alt2.xml')
+profilefaces = cv2.CascadeClassifier('haarcascade_profileface.xml')
 
 # defining fonctions
 def update_output( number ) :
@@ -35,25 +37,15 @@ def debug_img_show(msg, img) :
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
 
-def load_detected( xml, img ) :
-	haar = cv2.CascadeClassifier( xml )
+def load_detected( haar, img ) :
 	detected = haar.detectMultiScale( img )
 	return detected
 
-def detect_upperbody( img ) :
-	return load_detected('haarcascade_upperbody.xml', img)
-
-def detect_fullbody( img ) :
-	return load_detected('haarcascade_fullbody.xml', img)
-
-def detect_lowerbody( img ) :
-	return load_detected('haarcascade_lowerbody.xml', img)
-
 def detect_frontface( img ) :
-	return load_detected('haarcascade_frontalface_alt2.xml', img)
+	return load_detected( frontfaces, img )
 
 def detect_profileface( img ) :
-	return load_detected('haarcascade_profileface.xml', img)
+	return load_detected( profilefaces, img )
 
 def set_zone( people_list) :
 	for i in range(0, len( people_list ) ) :
