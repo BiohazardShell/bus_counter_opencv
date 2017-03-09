@@ -7,7 +7,7 @@ from PIL import Image
 
 
 # define vars
-debugging = False
+debugging = True
 running = True
 
 people_list = np.array( [  ] )
@@ -18,6 +18,7 @@ img_h = 720
 cam = picamera.PiCamera()
 cam.resolution = (img_w, img_h)
 cam.hflip = False
+RAWcapture = PiRGBArray( cam, size=( img_w, img_h ) )
 
 
 
@@ -25,15 +26,14 @@ cam.hflip = False
 def update_output( number ) :
 	print(" people in the bus : %s", number )
 
-def get_img( RAWcapture ) :
-	cam.capture(RAWcapture, format="bgr")
+def get_img() :
+	cam.capture(RAWcapture, format="rgb")
 	img = RAWcapture.array
 	return img
 
 def debug_img_show(msg, img) :
 	cv2.imshow( msg, img )
 	cv2.waitKey(0)
-	cv2.destroyAllWindows()
 
 def load_detected( xml, img ) :
 	haar = cv2.CascadeClassifier( xml )
@@ -76,18 +76,16 @@ def set_zone( people_list) :
 
 
 while ( running ) :
-	raw = PiRGBArray( cam, size=( img_w, img_h ) )
-	tmp_img = get_img( raw )
-	current_img = tmp_img
-	del raw
+	current_img = get_img()
+	tmp_img
 
 	if (debugging) :
-		cv2.rectangle( current_img, (0, 0), (img_w / 2, img_h), (255, 0, 0), 6 )
-		cv2.rectangle( current_img, (img_w / 2, 0), (img_w, img_h), (0, 0, 255), 6 )
-		debug_img_show( "raw rgb image", current_img )
+		cv2.rectangle( tmp_img, (0, 0), (img_w / 2, img_h), (255, 0, 0), 6 )
+		cv2.rectangle( tmp_img, (img_w / 2, 0), (img_w, img_h), (0, 0, 255), 6 )
+		debug_img_show( "raw rgb image", tmp_img )
 
-	frontfaces_detected = detect_frontface( cv2.cvtColor( tmp_img,  cv2.COLOR_BGR2GRAY) )
-	profilefaces_detected = detect_profileface( cv2.cvtColor( tmp_img, cv2.COLOR_BGR2GRAY ) )
+	frontfaces_detected = detect_frontface( tmp_img )
+	profilefaces_detected = detect_profileface( _img )
 
 	print( len( frontfaces_detected ) + len( profilefaces_detected ) )
 
