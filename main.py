@@ -7,7 +7,7 @@ from PIL import Image
 
 
 # define vars
-debugging = False
+debugging = True
 running = True
 
 people_list = np.array( [  ] )
