@@ -17,7 +17,7 @@ img_h = 720
 
 cam = picamera.PiCamera()
 cam.resolution = (img_w, img_h)
-cam.hflip = False
+cam.hflip = True
 
 # calassifier
 frontfaces = cv2.CascadeClassifier('haarcascade_frontalface_alt2.xml')
